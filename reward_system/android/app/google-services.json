@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "683499442974",
+    "project_id": "reward-system-717de",
+    "storage_bucket": "reward-system-717de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683499442974:android:655a44a0847545f0a92f0f",
+        "android_client_info": {
+          "package_name": "com.example.reward_system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "683499442974-d2ags34kktjm9ddno7v77gr7bb1j7h4c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0FhmfSkhXGQaElIv1uYUfvXbolkdkB04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "683499442974-d2ags34kktjm9ddno7v77gr7bb1j7h4c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

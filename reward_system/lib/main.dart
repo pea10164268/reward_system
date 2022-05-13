@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:reward_system/Profile/profile_screen.dart';
+import 'package:reward_system/Student/create_student.dart';
+import 'package:reward_system/Teacher/create_teacher.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -28,11 +30,13 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/login',
+      initialRoute: '/register',
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/profile': (context) => const ProfileScreen(),
+        '/teacher/add': (context) => const CreateTeacher(),
+        '/student/add': (context) => const CreateStudent(),
       },
       debugShowCheckedModeBanner: false,
     );

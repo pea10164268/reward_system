@@ -9,9 +9,32 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final myUserId = FirebaseAuth.instance.currentUser?.email;
+  final myUserId = FirebaseAuth.instance.currentUser?.displayName;
+  final _auth = FirebaseAuth.instance;
 
-  Future signOut() async {}
+  Future signOut() async {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Really?"),
+            content: const Text("Are you sure you want to log out?"),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pop(context, '/profile');
+                  },
+                  child: const Text('No')),
+              TextButton(
+                  onPressed: () async {
+                    await _auth.signOut();
+                    Navigator.popAndPushNamed(context, '/login');
+                  },
+                  child: const Text('Yes')),
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +45,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () async {
                 await signOut();
               },
+              label: const Text(
+                "Log out",
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
               icon: const Icon(
                 Icons.logout_sharp,
                 color: Colors.black,
-              ),
-              label: const Text(
-                "Log Out",
               ),
             ),
           ],

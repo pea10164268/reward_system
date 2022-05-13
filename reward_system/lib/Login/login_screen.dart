@@ -68,9 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
         appBar: AppBar(
           title: const Text('Sign in',
               style: TextStyle(
-                fontSize: 30,
+                fontSize: 20,
               )),
-          centerTitle: true,
         ),
         body: Center(
           child: Column(children: [

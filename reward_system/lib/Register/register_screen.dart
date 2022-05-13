@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -11,21 +12,31 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _auth = FirebaseAuth.instance;
   final GlobalKey _formKey = GlobalKey<FormState>();
+  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _conPasswordController = TextEditingController();
 
   Future registerUser() async {
     try {
-      final newUser = await _auth.createUserWithEmailAndPassword(
+      UserCredential newUser = await _auth.createUserWithEmailAndPassword(
           email: _emailController.text, password: _passwordController.text);
+      User? user = newUser.user;
+      await FirebaseFirestore.instance.collection('users').doc(user?.uid).set({
+        'full_name:': _fullNameController.text,
+        'email': _emailController.text,
+        'password': _passwordController.text,
+      });
+      // ignore: unnecessary_null_comparison
       if (newUser != null) {
+        user?.updateDisplayName(_fullNameController.text);
+        user?.reload();
         showDialog(
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: new Text("Success!"),
-                content: new Text("Registration Successful!"),
+                title: const Text("Success!"),
+                content: const Text("Registration Successful!"),
                 actions: [
                   TextButton(
                       onPressed: () => Navigator.pushNamed(context, '/login'),
@@ -47,6 +58,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
               padding: const EdgeInsets.all(32),
               child: Column(
                 children: <Widget>[
+                  TextFormField(
+                    controller: _fullNameController,
+                    decoration: const InputDecoration(
+                        hintText: 'Full Name*',
+                        hintStyle: TextStyle(fontWeight: FontWeight.normal)),
+                  ),
                   TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(
@@ -85,6 +102,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text('Sign up',
               style: TextStyle(

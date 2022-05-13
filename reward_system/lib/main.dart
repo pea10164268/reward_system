@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:reward_system/Classroom/classroom_list.dart';
+import 'package:reward_system/Classroom/create_classroom.dart';
 import 'package:reward_system/Profile/profile_screen.dart';
 import 'package:reward_system/Student/create_student.dart';
+import 'package:reward_system/Student/student_list.dart';
 import 'package:reward_system/Teacher/create_teacher.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
@@ -30,13 +33,16 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/register',
+      initialRoute: '/classroom',
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/teacher/add': (context) => const CreateTeacher(),
+        '/student': (context) => const StudentList(),
         '/student/add': (context) => const CreateStudent(),
+        '/classroom': (context) => const ClassroomList(),
+        '/classroom/add': (context) => const CreateClassroom(),
       },
       debugShowCheckedModeBanner: false,
     );

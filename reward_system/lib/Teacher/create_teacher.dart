@@ -10,31 +10,15 @@ class CreateTeacher extends StatefulWidget {
 
 class _CreateTeacherState extends State<CreateTeacher> {
   final GlobalKey _formKey = GlobalKey<FormState>();
-  final TextEditingController _fNameController = TextEditingController();
-  final TextEditingController _lNameController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
   CollectionReference teachers =
       FirebaseFirestore.instance.collection('teachers');
 
   Future<void> addTeacher() {
     return teachers.add({
-      'first_name': _fNameController.text,
-      'last_name': _lNameController.text,
-      'classroom': dropdownvalue,
+      'full_name': _fullNameController.text,
     });
   }
-
-  String dropdownvalue = 'Select a Class';
-
-  final _classes = [
-    'Select a Class',
-    'Reception',
-    'Year 1',
-    'Year 2',
-    'Year 3',
-    'Year 4',
-    'Year 5',
-    'Year 6',
-  ];
 
   Widget form() {
     return Expanded(
@@ -46,38 +30,28 @@ class _CreateTeacherState extends State<CreateTeacher> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextFormField(
-                    controller: _fNameController,
+                    controller: _fullNameController,
                     decoration: const InputDecoration(
-                        hintText: 'First Name*',
+                        hintText: 'Full Name*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
-                  ),
-                  TextFormField(
-                    controller: _lNameController,
-                    decoration: const InputDecoration(
-                        hintText: 'Last Name*',
-                        hintStyle: TextStyle(fontWeight: FontWeight.normal)),
-                  ),
-                  DropdownButton(
-                    value: dropdownvalue,
-                    isExpanded: true,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    items: _classes.map((String _classes) {
-                      return DropdownMenuItem(
-                          value: _classes, child: Text(_classes));
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownvalue = newValue!;
-                      });
-                    },
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text("Success!"),
+                              content: const Text("New teacher added"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, '/teacher/add'),
+                                    child: const Text('Ok')),
+                              ],
+                            );
+                          });
                       addTeacher();
-                      const snackBar = SnackBar(
-                        content: Text("Teacher added!"),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
                     icon: const Icon(
                       Icons.person_add_alt_rounded,

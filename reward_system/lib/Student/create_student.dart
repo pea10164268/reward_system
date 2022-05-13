@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -10,33 +12,22 @@ class CreateStudent extends StatefulWidget {
 
 class _CreateStudentState extends State<CreateStudent> {
   final GlobalKey _formKey = GlobalKey<FormState>();
-  final TextEditingController _fNameController = TextEditingController();
-  final TextEditingController _lNameController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
   CollectionReference students =
       FirebaseFirestore.instance.collection('students');
+  CollectionReference classrooms =
+      FirebaseFirestore.instance.collection('classrooms');
   CollectionReference teachers =
       FirebaseFirestore.instance.collection('teachers');
   var setDefaultTeacher = true;
+  var setDefaultClassroom = true;
   var teacher;
-
-  String dropdownvalue = 'Select a Class';
-
-  final _classes = [
-    'Select a Class',
-    'Reception',
-    'Year 1',
-    'Year 2',
-    'Year 3',
-    'Year 4',
-    'Year 5',
-    'Year 6',
-  ];
+  var classroom;
 
   Future<void> addStudent() {
     return students.add({
-      'first_name': _fNameController.text,
-      'last_name': _lNameController.text,
-      'classroom': dropdownvalue,
+      'full_name': _fullNameController.text,
+      'class_name': classroom,
       'teacher': teacher,
     });
   }
@@ -51,35 +42,50 @@ class _CreateStudentState extends State<CreateStudent> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   TextFormField(
-                    controller: _fNameController,
+                    controller: _fullNameController,
                     decoration: const InputDecoration(
-                        hintText: 'First Name*',
+                        hintText: 'Full Name*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
                   ),
-                  TextFormField(
-                    controller: _lNameController,
-                    decoration: const InputDecoration(
-                        hintText: 'Last Name*',
-                        hintStyle: TextStyle(fontWeight: FontWeight.normal)),
-                  ),
-                  DropdownButton(
-                    value: dropdownvalue,
-                    isExpanded: true,
-                    icon: const Icon(Icons.keyboard_arrow_down),
-                    items: _classes.map((String _classes) {
-                      return DropdownMenuItem(
-                          value: _classes, child: Text(_classes));
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        dropdownvalue = newValue!;
-                      });
+                  StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("classrooms")
+                        .orderBy("class_name")
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Text("Loading...");
+                      } else {
+                        if (setDefaultClassroom) {
+                          classroom = snapshot.data!.docs[0].get("class_name");
+                          debugPrint("setDefault classroom: $classroom");
+                        }
+                        return DropdownButton(
+                            isExpanded: true,
+                            value: classroom,
+                            items: snapshot.data!.docs.map((value) {
+                              return DropdownMenuItem(
+                                value: value.get('class_name'),
+                                child: Text('${value.get('class_name')}'),
+                              );
+                            }).toList(),
+                            onChanged: (value) {
+                              debugPrint("selected onchange: $value");
+                              setState(() {
+                                debugPrint("classroom selected: $value");
+                                classroom = value;
+                                setDefaultClassroom = false;
+                              });
+                            });
+                      }
                     },
                   ),
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
-                        .collection("teachers")
-                        .orderBy("last_name")
+                        .collection("classrooms")
+                        .where('class_name', isEqualTo: classroom)
+                        .orderBy("teacher")
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -87,17 +93,18 @@ class _CreateStudentState extends State<CreateStudent> {
                         return const Text("Loading...");
                       } else {
                         if (setDefaultTeacher) {
-                          teacher = snapshot.data!.docs[0].get("last_name");
+                          teacher = snapshot.data!.docs[0].get("teacher");
                           debugPrint("setDefault teacher: $teacher");
                         }
                         return DropdownButton(
-                            hint: const Text("Select a Teacher"),
-                            isExpanded: true,
+                            isExpanded: false,
                             value: teacher,
                             items: snapshot.data!.docs.map((value) {
                               return DropdownMenuItem(
-                                value: value.get('last_name'),
-                                child: Text('${value.get('last_name')}'),
+                                value: value.get('teacher'),
+                                child: Text(
+                                  '${value.get('teacher')}',
+                                ),
                               );
                             }).toList(),
                             onChanged: (value) {
@@ -113,11 +120,21 @@ class _CreateStudentState extends State<CreateStudent> {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text("Success!"),
+                              content: Text("New student added to $classroom!"),
+                              actions: [
+                                TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, '/student/add'),
+                                    child: const Text('Ok')),
+                              ],
+                            );
+                          });
                       addStudent();
-                      const snackBar = SnackBar(
-                        content: Text("Student added!"),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
                     icon: const Icon(
                       Icons.person_add_alt_rounded,

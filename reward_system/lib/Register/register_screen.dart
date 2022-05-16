@@ -11,7 +11,7 @@ class RegisterScreen extends StatefulWidget {
 
 class _RegisterScreenState extends State<RegisterScreen> {
   final _auth = FirebaseAuth.instance;
-  final GlobalKey _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -63,12 +63,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     decoration: const InputDecoration(
                         hintText: 'Full Name*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your full name.';
+                      }
+                      return null;
+                    },
                   ),
                   TextFormField(
                     controller: _emailController,
                     decoration: const InputDecoration(
                         hintText: 'Email Address*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email address.';
+                      }
+                      return null;
+                    },
                   ),
                   TextFormField(
                     obscureText: true,
@@ -76,6 +88,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     decoration: const InputDecoration(
                         hintText: 'Password*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password.';
+                      }
+                      return null;
+                    },
                   ),
                   TextFormField(
                     obscureText: true,
@@ -83,11 +101,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     decoration: const InputDecoration(
                         hintText: 'Confirm Password*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your confirm password.';
+                      } else if (_passwordController !=
+                          _conPasswordController) {
+                        return 'Your password and confirm password must match.';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton.icon(
                     onPressed: () {
-                      registerUser();
+                      if (_formKey.currentState!.validate()) {
+                        registerUser();
+                      }
                     },
                     icon: const Icon(
                       Icons.login_outlined,

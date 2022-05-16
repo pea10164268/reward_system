@@ -11,7 +11,7 @@ class CreateStudent extends StatefulWidget {
 }
 
 class _CreateStudentState extends State<CreateStudent> {
-  final GlobalKey _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _fullNameController = TextEditingController();
   CollectionReference students =
       FirebaseFirestore.instance.collection('students');
@@ -46,6 +46,12 @@ class _CreateStudentState extends State<CreateStudent> {
                     decoration: const InputDecoration(
                         hintText: 'Full Name*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your full name.';
+                      }
+                      return null;
+                    },
                   ),
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
@@ -120,21 +126,24 @@ class _CreateStudentState extends State<CreateStudent> {
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Success!"),
-                              content: Text("New student added to $classroom!"),
-                              actions: [
-                                TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, '/student/add'),
-                                    child: const Text('Ok')),
-                              ],
-                            );
-                          });
-                      addStudent();
+                      if (_formKey.currentState!.validate()) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Success!"),
+                                content:
+                                    Text("New student added to $classroom!"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          context, '/student/add'),
+                                      child: const Text('Ok')),
+                                ],
+                              );
+                            });
+                        addStudent();
+                      }
                     },
                     icon: const Icon(
                       Icons.person_add_alt_rounded,

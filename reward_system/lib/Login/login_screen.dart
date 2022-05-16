@@ -9,7 +9,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final GlobalKey _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
 
   final TextEditingController _emailController = TextEditingController();
@@ -46,6 +46,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: const InputDecoration(
                         hintText: 'Email Address*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email address.';
+                      }
+                      return null;
+                    },
                   ),
                   TextFormField(
                     obscureText: true,
@@ -53,11 +59,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: const InputDecoration(
                         hintText: 'Password*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password.';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton.icon(
                     onPressed: () {
-                      login_user();
+                      if (_formKey.currentState!.validate()) {
+                        login_user();
+                      }
                     },
                     icon: const Icon(
                       Icons.login_outlined,

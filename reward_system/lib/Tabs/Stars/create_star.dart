@@ -11,7 +11,7 @@ class CreateStar extends StatefulWidget {
 }
 
 class _CreateStarState extends State<CreateStar> {
-  final GlobalKey _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   CollectionReference students =
       FirebaseFirestore.instance.collection('students');
   CollectionReference teachers =
@@ -55,8 +55,7 @@ class _CreateStarState extends State<CreateStar> {
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection("classrooms")
-                        .orderBy("class_name")
-                        .where("class_name" == "class_name")
+                        .orderBy('class_name')
                         .snapshots(),
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -165,24 +164,33 @@ class _CreateStarState extends State<CreateStar> {
                         hintText: 'Description*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
                     maxLines: 2,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter a description.';
+                      }
+                      return null;
+                    },
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Well Done!"),
-                              content: Text("Keep up the good work, $student!"),
-                              actions: [
-                                TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, '/student/add'),
-                                    child: const Text('Ok')),
-                              ],
-                            );
-                          });
-                      addStar();
+                      if (_formKey.currentState!.validate()) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Well Done!"),
+                                content:
+                                    Text("Keep up the good work, $student!"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          context, '/student/add'),
+                                      child: const Text('Ok')),
+                                ],
+                              );
+                            });
+                        addStar();
+                      }
                     },
                     icon: const Icon(
                       Icons.star,

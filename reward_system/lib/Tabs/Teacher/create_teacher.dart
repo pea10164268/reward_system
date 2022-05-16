@@ -9,7 +9,7 @@ class CreateTeacher extends StatefulWidget {
 }
 
 class _CreateTeacherState extends State<CreateTeacher> {
-  final GlobalKey _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _fullNameController = TextEditingController();
   CollectionReference teachers =
       FirebaseFirestore.instance.collection('teachers');
@@ -34,24 +34,32 @@ class _CreateTeacherState extends State<CreateTeacher> {
                     decoration: const InputDecoration(
                         hintText: 'Full Name*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your full name.';
+                      }
+                      return null;
+                    },
                   ),
                   ElevatedButton.icon(
                     onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Success!"),
-                              content: const Text("New teacher added"),
-                              actions: [
-                                TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, '/teacher/add'),
-                                    child: const Text('Ok')),
-                              ],
-                            );
-                          });
-                      addTeacher();
+                      if (_formKey.currentState!.validate()) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text("Success!"),
+                                content: const Text("New teacher added"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(
+                                          context, '/teacher/add'),
+                                      child: const Text('Ok')),
+                                ],
+                              );
+                            });
+                        addTeacher();
+                      }
                     },
                     icon: const Icon(
                       Icons.person_add_alt_rounded,

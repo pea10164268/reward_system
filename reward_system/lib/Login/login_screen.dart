@@ -11,6 +11,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final GlobalKey _formKey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -22,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-      Navigator.popAndPushNamed(context, '/profile');
+      Navigator.popAndPushNamed(context, '/tabs');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         debugPrint('No user found with that email address.');
@@ -47,16 +48,35 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
                   ),
                   TextFormField(
+                    obscureText: true,
                     controller: _passwordController,
                     decoration: const InputDecoration(
                         hintText: 'Password*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
                   ),
-                  IconButton(
-                      onPressed: () {
-                        login_user();
-                      },
-                      icon: const Icon(Icons.login_outlined))
+                  const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      login_user();
+                    },
+                    icon: const Icon(
+                      Icons.login_outlined,
+                      color: Colors.black,
+                    ),
+                    label: const Text(
+                      "Sign In",
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  const Text('Don\'t have an account?',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
+                  ElevatedButton.icon(
+                      onPressed: () =>
+                          Navigator.popAndPushNamed(context, '/register'),
+                      icon: const Icon(Icons.person_add),
+                      label: const Text('Sign Up')),
                 ],
               ))),
     );
@@ -65,6 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text('Sign in',
               style: TextStyle(

@@ -1,10 +1,15 @@
+import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:reward_system/Classroom/classroom_list.dart';
-import 'package:reward_system/Classroom/create_classroom.dart';
-import 'package:reward_system/Profile/profile_screen.dart';
-import 'package:reward_system/Student/create_student.dart';
-import 'package:reward_system/Student/student_list.dart';
-import 'package:reward_system/Teacher/create_teacher.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:reward_system/Tabs/Stars/create_star.dart';
+import 'package:reward_system/decisions_tree.dart';
+import 'Tabs/Classroom/classroom_list.dart';
+import 'Tabs/Classroom/create_classroom.dart';
+import 'Tabs/Profile/profile_screen.dart';
+import 'Tabs/Student/create_student.dart';
+import 'Tabs/Student/student_list.dart';
+import 'Tabs/Tabs.dart';
+import 'Tabs/Teacher/create_teacher.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,11 +21,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -33,7 +38,7 @@ class MyApp extends StatelessWidget {
         ),
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/classroom',
+      home: const DecisionTree(),
       routes: {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
@@ -43,6 +48,8 @@ class MyApp extends StatelessWidget {
         '/student/add': (context) => const CreateStudent(),
         '/classroom': (context) => const ClassroomList(),
         '/classroom/add': (context) => const CreateClassroom(),
+        '/tabs': (context) => const TabsScreen(),
+        '/student/star': ((context) => const CreateStar()),
       },
       debugShowCheckedModeBanner: false,
     );

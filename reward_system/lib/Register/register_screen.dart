@@ -71,17 +71,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
                   ),
                   TextFormField(
+                    obscureText: true,
                     controller: _passwordController,
                     decoration: const InputDecoration(
                         hintText: 'Password*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
                   ),
                   TextFormField(
+                    obscureText: true,
                     controller: _conPasswordController,
                     decoration: const InputDecoration(
                         hintText: 'Confirm Password*',
                         hintStyle: TextStyle(fontWeight: FontWeight.normal)),
                   ),
+                  const SizedBox(height: 20),
                   ElevatedButton.icon(
                     onPressed: () {
                       registerUser();
@@ -93,7 +96,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     label: const Text(
                       "Sign up",
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 20),
+                  const Text('Already have an account?',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 10),
+                  ElevatedButton.icon(
+                      onPressed: () =>
+                          Navigator.popAndPushNamed(context, '/login'),
+                      icon: const Icon(Icons.login),
+                      label: const Text('Sign In')),
                 ],
               ))),
     );

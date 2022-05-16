@@ -38,6 +38,8 @@ dependencies:
   firebase_auth:
   firebase_core:
   google_fonts:
+  settings_ui: ^2.0.2
+  provider: ^6.0.2
 
 dev_dependencies:
   flutter_test:

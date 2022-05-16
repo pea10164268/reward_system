@@ -9,7 +9,7 @@ class CreateClassroom extends StatefulWidget {
 }
 
 class _CreateClassroomState extends State<CreateClassroom> {
-  final GlobalKey _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _classNameController = TextEditingController();
   CollectionReference classrooms =
       FirebaseFirestore.instance.collection('classrooms');
@@ -114,22 +114,24 @@ class _CreateClassroomState extends State<CreateClassroom> {
                           ),
                           ElevatedButton.icon(
                             onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text("Success!"),
-                                      content: Text(
-                                          "New classroom added! with $teacher as the teacher!"),
-                                      actions: [
-                                        TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, '/tabs'),
-                                            child: const Text('Ok')),
-                                      ],
-                                    );
-                                  });
-                              createClassroom();
+                              if (_formKey.currentState!.validate()) {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Success!"),
+                                        content: Text(
+                                            "New classroom added! with $teacher as the teacher!"),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  context, '/tabs'),
+                                              child: const Text('Ok')),
+                                        ],
+                                      );
+                                    });
+                                createClassroom();
+                              }
                             },
                             icon: const Icon(
                               Icons.add,

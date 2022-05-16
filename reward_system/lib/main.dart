@@ -1,7 +1,6 @@
-import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:reward_system/Tabs/Stars/create_star.dart';
+import 'package:reward_system/Tabs/Stars/stars_students.dart';
 import 'package:reward_system/decisions_tree.dart';
 import 'Tabs/Classroom/classroom_list.dart';
 import 'Tabs/Classroom/create_classroom.dart';
@@ -21,11 +20,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -49,7 +48,8 @@ class MyApp extends StatelessWidget {
         '/classroom': (context) => const ClassroomList(),
         '/classroom/add': (context) => const CreateClassroom(),
         '/tabs': (context) => const TabsScreen(),
-        '/student/star': ((context) => const CreateStar()),
+        '/star/add': ((context) => const CreateStar()),
+        '/star': (context) => const StudentStars()
       },
       debugShowCheckedModeBanner: false,
     );

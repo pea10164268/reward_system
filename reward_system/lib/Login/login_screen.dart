@@ -26,9 +26,11 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.popAndPushNamed(context, '/tabs');
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        debugPrint('No user found with that email address.');
+        return const AlertDialog(
+            title: Text('No user found with that email address.'));
       } else if (e.code == 'wrong-password') {
-        debugPrint('Wrong password provided for that user.');
+        return const AlertDialog(
+            title: Text('Wrong password provided for that user.'));
       }
     }
   }

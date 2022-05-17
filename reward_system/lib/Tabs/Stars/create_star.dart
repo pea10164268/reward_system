@@ -1,5 +1,4 @@
 // ignore_for_file: prefer_typing_uninitialized_variables
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +17,6 @@ class _CreateStarState extends State<CreateStar> {
       FirebaseFirestore.instance.collection('teachers');
   CollectionReference classrooms =
       FirebaseFirestore.instance.collection('classrooms');
-  CollectionReference stars = FirebaseFirestore.instance.collection('stars');
   final TextEditingController _descriptionController = TextEditingController();
   var setDefaultStudent = true;
   var student;
@@ -26,6 +24,8 @@ class _CreateStarState extends State<CreateStar> {
   var teacher;
   var setDefaultClassroom = true;
   var classroom;
+  final CollectionReference<Map<String, dynamic>> coll =
+      FirebaseFirestore.instance.collection("students");
 
   @override
   void dispose() {
@@ -34,12 +34,13 @@ class _CreateStarState extends State<CreateStar> {
     super.dispose();
   }
 
-  Future<void> addStar() {
-    return stars.add({
+  Future<void> addStar() async {
+    FirebaseFirestore.instance.collection("student").add({
       'full_name': student,
       'description': _descriptionController.text,
       'class_achieved': classroom,
       'awarded_by': teacher,
+      'no_of_stars': FieldValue.increment(1),
     });
   }
 
@@ -172,7 +173,7 @@ class _CreateStarState extends State<CreateStar> {
                     },
                   ),
                   ElevatedButton.icon(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         showDialog(
                             context: context,
@@ -208,6 +209,7 @@ class _CreateStarState extends State<CreateStar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text('Award a star',
               style: TextStyle(

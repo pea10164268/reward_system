@@ -50,12 +50,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
               label: const Text(
                 "Log out",
                 style: TextStyle(
-                  color: Colors.black,
+                  color: Colors.white,
                 ),
               ),
               icon: const Icon(
                 Icons.logout_sharp,
-                color: Colors.black,
+                color: Colors.white,
               ),
             ),
           ],
@@ -64,7 +64,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(height: 15),
+              const Divider(thickness: 10),
+              Card(
+                child: ListTile(
+                  title: Text('$myUserId',
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
+                  trailing: const Icon(Icons.edit),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/profile/edit');
+                  },
+                ),
+              ),
+              const Divider(thickness: 10),
               const Text(
                 'Classroom',
                 style: TextStyle(
@@ -79,7 +90,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   children: [
                     ListTile(
-                      title: const Text('Classroom list'),
+                      title: const Text('Classroom list',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       leading: const Icon(Icons.class_),
                       trailing: const Icon(Icons.keyboard_arrow_right),
                       onTap: () {
@@ -88,7 +100,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const Divider(thickness: 2),
                     ListTile(
-                      title: const Text('Add new classroom'),
+                      title: const Text('Add new classroom',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       leading: const Icon(Icons.class_),
                       trailing: const Icon(Icons.keyboard_arrow_right),
                       onTap: () {
@@ -98,6 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
+              const Divider(thickness: 10),
               const Text(
                 'Student',
                 style: TextStyle(
@@ -112,7 +126,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   children: [
                     ListTile(
-                      title: const Text('Student list'),
+                      title: const Text('Student list',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       leading: const Icon(Icons.class_),
                       trailing: const Icon(Icons.keyboard_arrow_right),
                       onTap: () {
@@ -121,7 +136,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const Divider(thickness: 2),
                     ListTile(
-                      title: const Text('Add new student'),
+                      title: const Text('Add new student',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       leading: const Icon(Icons.class_),
                       trailing: const Icon(Icons.keyboard_arrow_right),
                       onTap: () {
@@ -131,6 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
+              const Divider(thickness: 10),
               const Text(
                 'Teacher',
                 style: TextStyle(
@@ -145,7 +162,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   children: [
                     ListTile(
-                      title: const Text('Add new teacher'),
+                      title: const Text('Add new teacher',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                       leading: const Icon(Icons.class_),
                       trailing: const Icon(Icons.keyboard_arrow_right),
                       onTap: () {
@@ -155,6 +173,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 ),
               ),
+              const Divider(thickness: 10),
             ],
           ),
         ));

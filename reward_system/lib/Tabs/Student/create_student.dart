@@ -29,6 +29,7 @@ class _CreateStudentState extends State<CreateStudent> {
       'full_name': _fullNameController.text,
       'class_name': classroom,
       'teacher': teacher,
+      'no_of_stars': 0,
     });
   }
 

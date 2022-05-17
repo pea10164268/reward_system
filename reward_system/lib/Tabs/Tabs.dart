@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:reward_system/Tabs/Stars/create_star.dart';
 import 'Profile/profile_screen.dart';
@@ -21,10 +23,10 @@ class _TabsScreenState extends State<TabsScreen> {
       'page': const Leaderboard(),
     },
     {
-      'page': const CreateStar(),
+      'page': const ProfileScreen(),
     },
     {
-      'page': const ProfileScreen(),
+      'page': const CreateStar(),
     },
   ];
 
@@ -60,11 +62,10 @@ class _TabsScreenState extends State<TabsScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          _selectedIndex;
-        },
-      ),
+          child: const Icon(Icons.add),
+          onPressed: () {
+            Navigator.pushNamed(context, '/star/add');
+          }),
     );
   }
 }

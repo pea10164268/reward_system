@@ -1,4 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:reward_system/Tabs/Profile/profile_edit.dart';
 import 'package:reward_system/Tabs/Stars/create_star.dart';
 import 'package:reward_system/Tabs/Stars/stars_students.dart';
 import 'package:reward_system/decisions_tree.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
         '/profile': (context) => const ProfileScreen(),
+        '/profile/edit': (context) => const EditProfile(),
         '/teacher/add': (context) => const CreateTeacher(),
         '/student': (context) => const StudentList(),
         '/student/add': (context) => const CreateStudent(),

@@ -29,7 +29,14 @@ class _CreateStudentState extends State<CreateStudent> {
       'full_name': _fullNameController.text,
       'class_name': classroom,
       'teacher': teacher,
-      'no_of_stars': 0,
+      'no_of_stars': FieldValue.increment(1),
+    }).then((value) {
+      print(value.id);
+      FirebaseFirestore.instance
+          .collection("students")
+          .doc(value.id)
+          .collection("stars")
+          .add({});
     });
   }
 

@@ -110,7 +110,11 @@ class _StudentListState extends State<StudentList> {
               child: Column(
             children: [
               StreamBuilder(
-                stream: students.snapshots(),
+                stream: FirebaseFirestore.instance
+                    .collection("students")
+                    .where('class_name', isEqualTo: classroom)
+                    .orderBy("full_name")
+                    .snapshots(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.hasError) {
                     return const Text('Something went wrong',
@@ -125,7 +129,7 @@ class _StudentListState extends State<StudentList> {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text(snapshot.data!.docs[index]['full_name']),
+                        title: Text(snapshot.data?.docs[index]['full_name']),
                         subtitle:
                             Text(snapshot.data?.docs[index]['class_name']),
                         trailing: Text(snapshot.data?.docs[index]['teacher']),

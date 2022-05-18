@@ -62,7 +62,7 @@ class _TabsScreenState extends State<TabsScreen> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-          child: const Icon(Icons.add),
+          child: const Icon(Icons.star),
           onPressed: () {
             Navigator.pushNamed(context, '/star/add');
           }),

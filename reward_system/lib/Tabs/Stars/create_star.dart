@@ -24,8 +24,6 @@ class _CreateStarState extends State<CreateStar> {
   var teacher;
   var setDefaultClassroom = true;
   var classroom;
-  final CollectionReference<Map<String, dynamic>> coll =
-      FirebaseFirestore.instance.collection("students");
 
   @override
   void dispose() {
@@ -35,12 +33,11 @@ class _CreateStarState extends State<CreateStar> {
   }
 
   Future<void> addStar() async {
-    FirebaseFirestore.instance.collection("student").add({
+    FirebaseFirestore.instance.collection("stars").add({
       'full_name': student,
       'description': _descriptionController.text,
       'class_achieved': classroom,
       'awarded_by': teacher,
-      'no_of_stars': FieldValue.increment(1),
     });
   }
 

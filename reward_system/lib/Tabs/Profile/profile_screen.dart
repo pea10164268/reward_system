@@ -128,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ListTile(
                       title: const Text('Student list',
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      leading: const Icon(Icons.class_),
+                      leading: const Icon(Icons.person),
                       trailing: const Icon(Icons.keyboard_arrow_right),
                       onTap: () {
                         Navigator.pushNamed(context, '/student');
@@ -138,7 +138,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ListTile(
                       title: const Text('Add new student',
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      leading: const Icon(Icons.class_),
+                      leading: const Icon(Icons.person_add),
                       trailing: const Icon(Icons.keyboard_arrow_right),
                       onTap: () {
                         Navigator.pushNamed(context, '/student/add');
@@ -164,7 +164,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ListTile(
                       title: const Text('Add new teacher',
                           style: TextStyle(fontWeight: FontWeight.bold)),
-                      leading: const Icon(Icons.class_),
+                      leading: const Icon(Icons.person_add),
                       trailing: const Icon(Icons.keyboard_arrow_right),
                       onTap: () {
                         Navigator.pushNamed(context, '/teacher/add');
